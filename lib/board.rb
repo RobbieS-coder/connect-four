@@ -7,4 +7,10 @@ class Board
 
   def drop_piece
   end
+
+  def game_over?
+  end
+
+  def evaluate_winner
+  end
 end
