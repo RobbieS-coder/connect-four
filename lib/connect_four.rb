@@ -8,12 +8,9 @@ class ConnectFour
   def game_loop
   end
 
-  def game_over?
-  end
-
   def switch_player
   end
 
-  def evaluate_winner
+  def announce_winner
   end
 end
