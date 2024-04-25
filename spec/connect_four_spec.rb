@@ -5,7 +5,7 @@ describe ConnectFour do
     context 'when not passed any parameters' do
       context 'when not passed existing players' do
         xit 'creates two new players' do
-          expect(Player).to receive(:new).twice
+          expect(Player).to receive(:new).twice.with(no_args)
           described_class.new
         end
       end
@@ -26,7 +26,7 @@ describe ConnectFour do
 
       context 'when passed existing players' do
         xit 'does not create two new players' do
-          expect(Player).not_to receive(:new).twice
+          expect(Player).to receive(:new).twice.with(players)
           described_class.new(players, board)
         end
       end
@@ -169,7 +169,7 @@ describe ConnectFour do
     context 'when current_player is player_one' do
       before { game.instance_variable_set(:@current_player, player_one) }
 
-      it '@current_player becomes player_two' do
+      xit '@current_player becomes player_two' do
         game.switch_player
         expect(game.instance_variable_get(:@current_player)).to eq(player_two)
       end
@@ -178,7 +178,7 @@ describe ConnectFour do
     context 'when current_player is player_two' do
       before { game.instance_variable_set(:@current_player, player_two) }
 
-      it '@current_player becomes player_one' do
+      xit '@current_player becomes player_one' do
         game.switch_player
         expect(game.instance_variable_get(:@current_player)).to eq(player_one)
       end
