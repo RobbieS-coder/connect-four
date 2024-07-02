@@ -15,7 +15,7 @@ describe Board do
       let(:used_board) { double('used_board') }
 
       xit 'assigns used board to @game_board' do
-         used_board_class = described_class.new(used_board)
+        used_board_class = described_class.new(used_board)
         expect(used_board_class.instance_variable_get(:@game_board)).to eq(used_board)
       end
     end
@@ -25,24 +25,29 @@ describe Board do
     context 'when drop is successful' do
       context 'when column is empty' do
         subject(:empty_column_drop) { described_class(empty_column) }
-        let(:empty_column) { [
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
-        let(:empty_column_drop_result) { [
-          [nil, nil, nil, nil, nil, 'blue'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+
+        let(:empty_column) do
+          [
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
+        let(:empty_column_drop_result) do
+          [
+            [nil, nil, nil, nil, nil, 'blue'],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         before { result = empty_column_drop.drop_piece(1, 'blue') }
 
@@ -57,24 +62,29 @@ describe Board do
 
       context 'when column is semi-full' do
         subject(:semi_full_column_drop) { described_class(semi_full_column) }
-        let(:semi_full_column) { [
-          [nil, 'blue', 'red', 'blue', 'red', 'blue'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
-        let(:semi_full_column_drop_result) { [
-          ['red', 'blue', 'red', 'blue', 'red', 'blue'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+
+        let(:semi_full_column) do
+          [
+            [nil, 'blue', 'red', 'blue', 'red', 'blue'],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
+        let(:semi_full_column_drop_result) do
+          [
+            %w[red blue red blue red blue],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         before { result = semi_full_column_drop.drop_piece(1, 'red') }
 
@@ -90,15 +100,18 @@ describe Board do
 
     context 'when column is full' do
       subject(:full_column_drop) { described_class(full_column) }
-      let(:full_column) { [
-        ['red', 'blue', 'red', 'blue', 'red', 'blue'],
-        [nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil],
-        [nil, nil, nil, nil, nil, nil]
-      ] }
+
+      let(:full_column) do
+        [
+          %w[red blue red blue red blue],
+          [nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil]
+        ]
+      end
 
       before { result = full_column_drop.drop_piece(1, 'blue') }
 
@@ -115,33 +128,37 @@ describe Board do
   describe '#game_over?' do
     context 'when someone has won' do
       context 'when a horizontal line has been made' do
-        let(:horizontal_win) { [
-          [nil, nil, nil, nil, 'red', 'blue'],
-          [nil, nil, nil, nil, 'red', 'blue'],
-          [nil, nil, nil, nil, 'red', 'blue'],
-          [nil, nil, nil, nil, nil, 'blue'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+        let(:horizontal_win) do
+          [
+            [nil, nil, nil, nil, 'red', 'blue'],
+            [nil, nil, nil, nil, 'red', 'blue'],
+            [nil, nil, nil, nil, 'red', 'blue'],
+            [nil, nil, nil, nil, nil, 'blue'],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         xit 'returns true' do
           board = described_class.new(horizontal_win)
           result = board.game_over?
-          expect(result).eq(true)
+          expect(result).to eq(true)
         end
       end
 
       context 'when a vertical line has been made' do
-        let(:vertical_win) { [
-          [nil, nil, 'blue', 'blue', 'blue', 'blue'],
-          [nil, nil, nil, 'red', 'red', 'red'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+        let(:vertical_win) do
+          [
+            [nil, nil, 'blue', 'blue', 'blue', 'blue'],
+            [nil, nil, nil, 'red', 'red', 'red'],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         xit 'returns true' do
           board = described_class.new(vertical_win)
@@ -151,15 +168,17 @@ describe Board do
       end
 
       context 'when a diagonal line has been made' do
-        let(:diagonal_win) { [
-          [nil, nil, nil, nil, nil, 'blue'],
-          [nil, nil, nil, nil, 'blue', 'red'],
-          [nil, nil, nil, 'blue', 'red', 'red'],
-          [nil, nil, 'blue', 'red', 'red', 'blue'],
-          [nil, nil, nil, nil, nil, 'blue'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+        let(:diagonal_win) do
+          [
+            [nil, nil, nil, nil, nil, 'blue'],
+            [nil, nil, nil, nil, 'blue', 'red'],
+            [nil, nil, nil, 'blue', 'red', 'red'],
+            [nil, nil, 'blue', 'red', 'red', 'blue'],
+            [nil, nil, nil, nil, nil, 'blue'],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         xit 'returns true' do
           board = described_class.new(diagonal_win)
@@ -171,15 +190,17 @@ describe Board do
 
     context 'when noone has won' do
       context 'when someone has two in a row' do
-        let(:two_not_win) { [
-          [nil, nil, nil, nil, 'blue', 'blue'],
-          [nil, nil, nil, nil, nil, 'red'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+        let(:two_not_win) do
+          [
+            [nil, nil, nil, nil, 'blue', 'blue'],
+            [nil, nil, nil, nil, nil, 'red'],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         xit 'returns false' do
           board = described_class.new(two_not_win)
@@ -189,15 +210,17 @@ describe Board do
       end
 
       context 'when someone has three in a row' do
-        let(:three_not_win) { [
-          [nil, nil, nil, 'blue', 'blue', 'blue'],
-          [nil, nil, nil, nil, 'red', 'red'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+        let(:three_not_win) do
+          [
+            [nil, nil, nil, 'blue', 'blue', 'blue'],
+            [nil, nil, nil, nil, 'red', 'red'],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         xit 'returns false' do
           board = described_class.new(three_not_win)
@@ -208,15 +231,17 @@ describe Board do
     end
 
     context 'when the board is full' do
-      let(:full_board_draw) { [
-        ['red', 'blue', 'red', 'blue', 'red', 'blue'],
-        ['red', 'blue', 'red', 'blue', 'red', 'blue'],
-        ['red', 'blue', 'red', 'blue', 'red', 'blue'],
-        ['blue', 'red', 'blue', 'red', 'blue', 'red'],
-        ['blue', 'red', 'blue', 'red', 'blue', 'red'],
-        ['blue', 'red', 'blue', 'red', 'blue', 'red'],
-        ['red', 'blue', 'red', 'blue', 'red', 'blue']
-      ] }
+      let(:full_board_draw) do
+        [
+          %w[red blue red blue red blue],
+          %w[red blue red blue red blue],
+          %w[red blue red blue red blue],
+          %w[blue red blue red blue red],
+          %w[blue red blue red blue red],
+          %w[blue red blue red blue red],
+          %w[red blue red blue red blue]
+        ]
+      end
 
       xit 'returns true' do
         board = described_class.new(full_board_draw)
@@ -230,15 +255,18 @@ describe Board do
     context 'when player_one wins' do
       context 'with a horizontal line' do
         subject(:evaluate_player_one_horizontal_win) { described_class(player_one_horizontal_win) }
-        let(:player_one_horizontal_win) { [
-          [nil, nil, nil, nil, 'red', 'blue'],
-          [nil, nil, nil, nil, 'red', 'blue'],
-          [nil, nil, nil, nil, 'red', 'blue'],
-          [nil, nil, nil, nil, nil, 'blue'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+
+        let(:player_one_horizontal_win) do
+          [
+            [nil, nil, nil, nil, 'red', 'blue'],
+            [nil, nil, nil, nil, 'red', 'blue'],
+            [nil, nil, nil, nil, 'red', 'blue'],
+            [nil, nil, nil, nil, nil, 'blue'],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         xit "returns player_one's colour" do
           result = evaluate_player_one_horizontal_win.evaluate_winner
@@ -248,15 +276,18 @@ describe Board do
 
       context 'with a vertical line' do
         subject(:evaluate_player_one_vertical_win) { described_class(player_one_vertical_win) }
-        let(:player_one_vertical_win) { [
-          [nil, nil, 'blue', 'blue', 'blue', 'blue'],
-          [nil, nil, nil, 'red', 'red', 'red'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+
+        let(:player_one_vertical_win) do
+          [
+            [nil, nil, 'blue', 'blue', 'blue', 'blue'],
+            [nil, nil, nil, 'red', 'red', 'red'],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         xit "returns player_one's colour" do
           result = evaluate_player_one_vertical_win.evaluate_winner
@@ -266,15 +297,18 @@ describe Board do
 
       context 'with a diagonal line' do
         subject(:evaluate_player_one_diagonal_win) { described_class(player_one_diagonal_win) }
-        let(:player_one_diagonal_win) { [
-          [nil, nil, nil, nil, nil, 'blue'],
-          [nil, nil, nil, nil, 'blue', 'red'],
-          [nil, nil, nil, 'blue', 'red', 'red'],
-          [nil, nil, 'blue', 'red', 'red', 'blue'],
-          [nil, nil, nil, nil, nil, 'blue'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+
+        let(:player_one_diagonal_win) do
+          [
+            [nil, nil, nil, nil, nil, 'blue'],
+            [nil, nil, nil, nil, 'blue', 'red'],
+            [nil, nil, nil, 'blue', 'red', 'red'],
+            [nil, nil, 'blue', 'red', 'red', 'blue'],
+            [nil, nil, nil, nil, nil, 'blue'],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         xit "returns player_one's colour" do
           result = evaluate_player_one_diagonal_win.evaluate_winner
@@ -285,16 +319,19 @@ describe Board do
 
     context 'when player two wins' do
       subject(:evaluate_player_two_horizontal_win) { described_class(player_two_horizontal_win) }
+
       context 'with a horizontal line' do
-        let(:player_two_horizontal_win) { [
-          [nil, nil, nil, nil, 'red', 'blue'],
-          [nil, nil, nil, nil, 'red', 'blue'],
-          [nil, nil, nil, nil, 'red', 'blue'],
-          [nil, nil, nil, nil, 'red', 'red'],
-          [nil, nil, nil, nil, nil, 'blue'],
-          [nil, nil, nil, nil, nil, 'blue'],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+        let(:player_two_horizontal_win) do
+          [
+            [nil, nil, nil, nil, 'red', 'blue'],
+            [nil, nil, nil, nil, 'red', 'blue'],
+            [nil, nil, nil, nil, 'red', 'blue'],
+            [nil, nil, nil, nil, 'red', 'red'],
+            [nil, nil, nil, nil, nil, 'blue'],
+            [nil, nil, nil, nil, nil, 'blue'],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         xit "returns player_two's colour" do
           result = evaluate_player_two_horizontal_win.evaluate_winner
@@ -304,15 +341,18 @@ describe Board do
 
       context 'with a vertical line' do
         subject(:evaluate_player_two_vertical_win) { described_class(player_two_vertical_win) }
-        let(:player_two_vertical_win) { [
-          [nil, nil, nil, 'blue', 'blue', 'blue'],
-          [nil, nil, 'red', 'red', 'red', 'red'],
-          [nil, nil, nil, nil, nil, 'blue'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+
+        let(:player_two_vertical_win) do
+          [
+            [nil, nil, nil, 'blue', 'blue', 'blue'],
+            [nil, nil, 'red', 'red', 'red', 'red'],
+            [nil, nil, nil, nil, nil, 'blue'],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         xit "returns player_two's colour" do
           result = evaluate_player_two_vertical_win.evaluate_winner
@@ -322,15 +362,18 @@ describe Board do
 
       context 'with a diagonal line' do
         subject(:evaluate_player_two_diagonal_win) { described_class(player_two_diagonal_win) }
-        let(:player_two_diagonal_win) { [
-          [nil, nil, nil, nil, nil, 'red'],
-          [nil, nil, nil, nil, 'red', 'blue'],
-          [nil, nil, nil, 'red', 'blue', 'blue'],
-          [nil, nil, 'red', 'blue', 'red', 'blue'],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil]
-        ] }
+
+        let(:player_two_diagonal_win) do
+          [
+            [nil, nil, nil, nil, nil, 'red'],
+            [nil, nil, nil, nil, 'red', 'blue'],
+            [nil, nil, nil, 'red', 'blue', 'blue'],
+            [nil, nil, 'red', 'blue', 'red', 'blue'],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil]
+          ]
+        end
 
         xit "returns player_two's colour" do
           result = evaluate_player_two_diagonal_win.evaluate_winner
@@ -341,15 +384,18 @@ describe Board do
 
     context 'when board is full' do
       subject(:evaluate_draw) { described_class(full_board_draw) }
-      let(:full_board_draw) { [
-        ['red', 'blue', 'red', 'blue', 'red', 'blue'],
-        ['red', 'blue', 'red', 'blue', 'red', 'blue'],
-        ['red', 'blue', 'red', 'blue', 'red', 'blue'],
-        ['blue', 'red', 'blue', 'red', 'blue', 'red'],
-        ['blue', 'red', 'blue', 'red', 'blue', 'red'],
-        ['blue', 'red', 'blue', 'red', 'blue', 'red'],
-        ['red', 'blue', 'red', 'blue', 'red', 'blue']
-      ] }
+
+      let(:full_board_draw) do
+        [
+          %w[red blue red blue red blue],
+          %w[red blue red blue red blue],
+          %w[red blue red blue red blue],
+          %w[blue red blue red blue red],
+          %w[blue red blue red blue red],
+          %w[blue red blue red blue red],
+          %w[red blue red blue red blue]
+        ]
+      end
 
       xit 'returns nil' do
         result = evaluate_draw.evaluate_winner

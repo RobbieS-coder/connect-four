@@ -4,14 +4,14 @@ describe ConnectFour do
   describe '#initialize' do
     context 'when not passed any parameters' do
       context 'when not passed existing players' do
-        xit 'creates two new players' do
+        it 'creates two new players' do
           expect(Player).to receive(:new).twice.with(no_args)
           described_class.new
         end
       end
 
       context 'when not passed an existing board' do
-        xit 'creates a new board' do
+        it 'creates a new board' do
           expect(Board).to receive(:new).once
           described_class.new
         end
@@ -25,15 +25,15 @@ describe ConnectFour do
       let(:board) { double('board') }
 
       context 'when passed existing players' do
-        xit 'does not create two new players' do
-          expect(Player).to receive(:new).twice.with(players)
+        it 'does not create two new players' do
+          expect(Player).not_to receive(:new)
           described_class.new(players, board)
         end
       end
 
       context 'when passed an existing board' do
-        xit 'does not create a new board' do
-          expect(Board).not_to receive(:new).once
+        it 'does not create a new board' do
+          expect(Board).not_to receive(:new)
           described_class.new(players, board)
         end
       end
@@ -43,18 +43,31 @@ describe ConnectFour do
   describe '#game_loop' do
     context 'when game_over? returns false then true' do
       subject(:end_game) { described_class.new(players, board) }
+
       let(:player_one) { double('player_one') }
       let(:player_two) { double('player_two') }
       let(:players) { [player_one, player_two] }
       let(:board) { double('board') }
 
-      matcher :have_run_loop do
-        match do |game|
-          expect(board).to receive(:display_board).once
-          expect(player_one).to receive(:player_input).once.or(expect(player_two).to receive(:player_input).once)
-          expect(board).to receive(:drop_piece).once
-          expect(end_game).to receive(:switch_player).once
+      before do
+        allow(board).to receive(:display_board)
+        allow(player_one).to receive(:player_input)
+        allow(player_two).to receive(:player_input)
+        allow(board).to receive(:drop_piece)
+        allow(end_game).to receive(:switch_player)
+      end
+
+      def expect_loop(times)
+        expect(board).to receive(:display_board).exactly(times)
+        if times == 1
+          expect(player_one).to receive(:player_input).once
+        else
+          unless times == 1
+            expect(player_one).to receive(:player_input).at_least(times / 2).or(expect(player_two).to(receive(:player_input).at_least(times / 2)))
+          end
         end
+        expect(board).to receive(:drop_piece).exactly(times)
+        expect(end_game).to receive(:switch_player).exactly(times)
       end
 
       context 'when game_over? returns true' do
@@ -62,8 +75,8 @@ describe ConnectFour do
           allow(board).to receive(:game_over?).and_return(true)
         end
 
-        xit 'calls #announce_winner' do
-          expect(end_game).to receive(evaluate_winner)
+        it 'calls #announce_winner' do
+          expect(end_game).to receive(:announce_winner)
           end_game.game_loop
         end
       end
@@ -73,13 +86,13 @@ describe ConnectFour do
           allow(board).to receive(:game_over?).and_return(false, true)
         end
 
-        xit 'runs loop once' do
-          expect(end_game).to have_run_loop.once
+        it 'runs loop once' do
+          expect_loop(1)
           end_game.game_loop
         end
 
-        xit 'calls #announce_winner' do
-          expect(end_game).to receive(evaluate_winner)
+        it 'calls #announce_winner' do
+          expect(end_game).to receive(:announce_winner)
           end_game.game_loop
         end
       end
@@ -89,13 +102,13 @@ describe ConnectFour do
           allow(board).to receive(:game_over?).and_return(false, false, false, false, false, true)
         end
 
-        xit 'runs loop five times' do
-          expect(end_game).to have_run_loop.exactly(5)
+        it 'runs loop five times' do
+          expect_loop(5)
           end_game.game_loop
         end
 
-        xit 'calls #announce_winner' do
-          expect(end_game).to receive(evaluate_winner)
+        it 'calls #announce_winner' do
+          expect(end_game).to receive(:announce_winner)
           end_game.game_loop
         end
       end
@@ -103,6 +116,7 @@ describe ConnectFour do
 
     context 'when game_over? returns false and loop runs' do
       subject(:loop_game) { described_class.new(players, board) }
+
       let(:player_one) { double('player_one') }
       let(:player_two) { double('player_two') }
       let(:players) { [player_one, player_two] }
@@ -117,17 +131,17 @@ describe ConnectFour do
         allow(end_game).to receive(:switch_player)
       end
 
-      xit 'calls display_board' do
+      it 'calls display_board' do
         expect(board).to receive(:display_board)
         loop_game.game_loop
       end
 
-      xit 'calls player_input' do
-        expect(player_one).to receive(:player_input).or(expect(player_two).to receive(:player_input))
+      it 'calls player_input' do
+        expect(player_one).to receive(:player_input).or(expect(player_two).to(receive(:player_input)))
         loop_game.game_loop
       end
 
-      xit 'calls drop_piece' do
+      it 'calls drop_piece' do
         expect(board).to receive(:drop_piece)
         loop_game.game_loop
       end
@@ -137,7 +151,7 @@ describe ConnectFour do
           allow(board).to receive(:drop_piece).and_return(true)
         end
 
-        xit 'continues loop and calls switch_player' do
+        it 'continues loop and calls switch_player' do
           expect(loop_game).to receive(:switch_player)
           loop_game.game_loop
         end
@@ -148,12 +162,12 @@ describe ConnectFour do
           allow(board).to receive(:drop_piece).and_return(false, true)
         end
 
-        xit 'calls player_input again' do
-          expect(player_one).to receive(:player_input).twice.or(expect(player_two).to receive(:player_input).twice)
+        it 'calls player_input again' do
+          expect(player_one).to receive(:player_input).twice.or(expect(player_two).to(receive(:player_input).twice))
           loop_game.game_loop
         end
 
-        xit 'continues loop and calls switch_player' do
+        it 'continues loop and calls switch_player' do
           expect(loop_game).to receive(:switch_player)
           loop_game.game_loop
         end
@@ -162,14 +176,16 @@ describe ConnectFour do
   end
 
   describe '#switch_player' do
+    subject(:game) { described_class.new(players) }
+
     let(:player_one) { double('player_one') }
     let(:player_two) { double('player_two') }
-    subject(:game) { described_class.new }
+    let(:players) { [player_one, player_two] }
 
     context 'when current_player is player_one' do
       before { game.instance_variable_set(:@current_player, player_one) }
 
-      xit '@current_player becomes player_two' do
+      it '@current_player becomes player_two' do
         game.switch_player
         expect(game.instance_variable_get(:@current_player)).to eq(player_two)
       end
@@ -178,7 +194,7 @@ describe ConnectFour do
     context 'when current_player is player_two' do
       before { game.instance_variable_set(:@current_player, player_two) }
 
-      xit '@current_player becomes player_one' do
+      it '@current_player becomes player_one' do
         game.switch_player
         expect(game.instance_variable_get(:@current_player)).to eq(player_one)
       end
