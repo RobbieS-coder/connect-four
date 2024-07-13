@@ -26,7 +26,9 @@ class ConnectFour
     @current_player = (@current_player == @player_one ? @player_two : @player_one)
   end
 
+  private
+
   def announce_winner
-    puts "#{@board.evaluate_winner} has made a line!"
+    puts "#{@board.evaluate_winner} has made a line and won!"
   end
 end

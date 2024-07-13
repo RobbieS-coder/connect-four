@@ -54,20 +54,8 @@ describe ConnectFour do
         allow(player_one).to receive(:player_input)
         allow(player_two).to receive(:player_input)
         allow(board).to receive(:drop_piece)
-        allow(end_game).to receive(:switch_player)
-      end
-
-      def expect_loop(times)
-        expect(board).to receive(:display_board).exactly(times)
-        if times == 1
-          expect(player_one).to receive(:player_input).once
-        else
-          unless times == 1
-            expect(player_one).to receive(:player_input).at_least(times / 2).or(expect(player_two).to(receive(:player_input).at_least(times / 2)))
-          end
-        end
-        expect(board).to receive(:drop_piece).exactly(times)
-        expect(end_game).to receive(:switch_player).exactly(times)
+        allow(end_game).to receive(:announce_winner)
+        allow(board).to receive(:evaluate_winner)
       end
 
       context 'when game_over? returns true' do
@@ -84,10 +72,15 @@ describe ConnectFour do
       context 'when game_over? returns false once then returns true' do
         before do
           allow(board).to receive(:game_over?).and_return(false, true)
+          allow(board).to receive(:drop_piece).and_return(true)
         end
 
         it 'runs loop once' do
-          expect_loop(1)
+          expect(board).to receive(:display_board).once
+          expect(player_one).to receive(:player_input).once
+          expect(board).to receive(:drop_piece).once
+          expect(end_game).to receive(:switch_player).once
+
           end_game.game_loop
         end
 
@@ -100,10 +93,15 @@ describe ConnectFour do
       context 'when game_over? returns false five times then returns true' do
         before do
           allow(board).to receive(:game_over?).and_return(false, false, false, false, false, true)
+          allow(board).to receive(:drop_piece).and_return(true, true, true, true, true)
         end
 
         it 'runs loop five times' do
-          expect_loop(5)
+          expect(board).to receive(:display_board).exactly(5).times
+          expect(player_one).to receive(:player_input).exactly(3).times
+          expect(player_two).to receive(:player_input).exactly(2).times
+          expect(end_game).to receive(:switch_player).exactly(5).times.and_call_original
+
           end_game.game_loop
         end
 
@@ -123,12 +121,14 @@ describe ConnectFour do
       let(:board) { double('board') }
 
       before do
-        allow(board).to receive(:game_over?).and_return(false)
+        allow(board).to receive(:game_over?).and_return(false, true)
         allow(board).to receive(:display_board)
         allow(player_one).to receive(:player_input)
         allow(player_two).to receive(:player_input)
-        allow(board).to receive(:drop_piece)
-        allow(end_game).to receive(:switch_player)
+        allow(board).to receive(:drop_piece).and_return(true)
+        allow(loop_game).to receive(:switch_player)
+        allow(loop_game).to receive(:announce_winner)
+        allow(board).to receive(:evaluate_winner)
       end
 
       it 'calls display_board' do
@@ -137,7 +137,7 @@ describe ConnectFour do
       end
 
       it 'calls player_input' do
-        expect(player_one).to receive(:player_input).or(expect(player_two).to(receive(:player_input)))
+        expect(player_one).to receive(:player_input)
         loop_game.game_loop
       end
 
@@ -163,7 +163,7 @@ describe ConnectFour do
         end
 
         it 'calls player_input again' do
-          expect(player_one).to receive(:player_input).twice.or(expect(player_two).to(receive(:player_input).twice))
+          expect(player_one).to receive(:player_input).twice
           loop_game.game_loop
         end
 
@@ -176,6 +176,7 @@ describe ConnectFour do
   end
 
   describe '#switch_player' do
+
     subject(:game) { described_class.new(players) }
 
     let(:player_one) { double('player_one') }
