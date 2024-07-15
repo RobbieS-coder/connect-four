@@ -11,6 +11,10 @@ describe ConnectFour do
       end
 
       context 'when not passed an existing board' do
+        before do
+          allow(Player).to receive(:new)
+        end
+
         it 'creates a new board' do
           expect(Board).to receive(:new).once
           described_class.new
@@ -99,7 +103,7 @@ describe ConnectFour do
         it 'runs loop five times' do
           expect(board).to receive(:display_board).exactly(5).times
           expect(player_one).to receive(:player_input).exactly(3).times
-          expect(player_two).to receive(:player_input).exactly(2).times
+          expect(player_two).to receive(:player_input).twice
           expect(end_game).to receive(:switch_player).exactly(5).times.and_call_original
 
           end_game.game_loop
@@ -176,7 +180,6 @@ describe ConnectFour do
   end
 
   describe '#switch_player' do
-
     subject(:game) { described_class.new(players) }
 
     let(:player_one) { double('player_one') }
