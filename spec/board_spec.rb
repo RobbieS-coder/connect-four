@@ -5,7 +5,7 @@ describe Board do
     context 'when not providing a game board' do
       let(:empty_board) { Array.new(7) { Array.new(6, nil) } }
 
-      xit 'assigns empty board to @game_board' do
+      it 'assigns empty board to @game_board' do
         empty_board_class = described_class.new
         expect(empty_board_class.instance_variable_get(:@game_board)).to eq(empty_board)
       end
@@ -14,7 +14,7 @@ describe Board do
     context 'when providing a used game board' do
       let(:used_board) { double('used_board') }
 
-      xit 'assigns used board to @game_board' do
+      it 'assigns used board to @game_board' do
         used_board_class = described_class.new(used_board)
         expect(used_board_class.instance_variable_get(:@game_board)).to eq(used_board)
       end
