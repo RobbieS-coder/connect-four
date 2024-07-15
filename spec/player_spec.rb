@@ -2,36 +2,42 @@ require_relative '../lib/player'
 
 describe Player do
   describe '#initialize' do
-    context 'when not providing a colour' do
-      xit 'asks user to input the token colour' do
-        input_request = 'Input the colour you want your token to be: '
-        expect(described_class).to receive(:puts).with(input_request)
+    context 'when creating new player' do
+      it 'asks user to input the token colour' do
+        input_request = "The available colours are red, green, yellow, blue, magenta and cyan.\nInput your token colour: "
+        expect_any_instance_of(described_class).to receive(:puts).with(input_request).once
+        allow_any_instance_of(Player).to receive(:gets).and_return('blue')
         described_class.new
       end
+    end
 
-      context 'when user has already been asked for input' do
-        subject(:new_player) { described_class.new }
+    context 'when inputting colours' do
+      subject(:new_player) { described_class.new }
 
-        context 'when inputting allowed colour' do
-          before do
-            allowed_colour = 'blue'
-            allow(new_player).to receive(:gets).and_return(allowed_colour)
-          end
+      let(:valid_colour) { 'blue' }
+      let(:invalid_colour) { 'orange' }
 
-          xit 'assigns the colour to @token_colour' do
-            expect(new_player.instance_variable_get(:@token_colour)).to eq(allowed_colour)
-          end
+      before do
+        allow_any_instance_of(Player).to receive(:puts)
+      end
+
+      context 'when inputting valid colour' do
+        before do
+          allow_any_instance_of(Player).to receive(:gets).and_return(valid_colour)
         end
 
-        context 'when inputting not allowed colour' do
-          before do
-            not_allowed_colour = 'orange'
-            allow(new_player).to receive(:gets).and_return(not_allowed_colour)
-          end
+        it 'assigns the colour to @token_colour' do
+          expect(new_player.instance_variable_get(:@token_colour)).to eq(valid_colour)
+        end
+      end
 
-          xit 'rejects the input and lists allowed colours' do
-            expect(new_player.instance_variable_get(:@token_colour)).to eq(not_allowed_colour)
-          end
+      context 'when inputting an invalid, then valid colour' do
+        before do
+          allow_any_instance_of(Player).to receive(:gets).and_return(invalid_colour, valid_colour)
+        end
+
+        it 'still assigns the colour to @token_colour' do
+          expect(new_player.instance_variable_get(:@token_colour)).to eq(valid_colour)
         end
       end
     end
