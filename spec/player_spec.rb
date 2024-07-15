@@ -44,38 +44,45 @@ describe Player do
   end
 
   describe '#player_input' do
-    subject(:input_test) { described_class.new }
+    subject(:input_test) { described_class.new(valid_colour) }
 
-    context 'when inputting a number between 1 and 6' do
+    let(:valid_colour) { 'blue' }
+    let(:valid_num_str) { '2' }
+    let(:valid_num) { 2 }
+
+    before do
+      allow_any_instance_of(Player).to receive(:puts)
+    end
+
+    context 'when inputting a number between 1 and 7' do
       before do
-        str = '2'
-        allow(input_test).to receive(:gets).and_return(str)
+        allow(input_test).to receive(:gets).and_return(valid_num_str)
       end
 
-      xit 'returns the number' do
-        expect(input_test.player_input).to eq(2)
+      it 'returns the valid number' do
+        expect(input_test.player_input).to eq(valid_num)
       end
     end
 
-    context 'when inputting a number out of bounds' do
+    context 'when inputting a number out of then in bounds' do
       before do
-        str = '7'
-        allow(input_test).to receive(:gets).and_return(str)
+        invalid_num = '8'
+        allow(input_test).to receive(:gets).and_return(invalid_num, valid_num_str)
       end
 
-      xit 'rejects the input and asks for another' do
-        expect(input_test.player_input).to be_nil
+      it 'still returns the valid number' do
+        expect(input_test.player_input).to eq(valid_num)
       end
     end
 
-    context 'when inputting a letter' do
+    context 'when inputting a letter then valid number' do
       before do
-        str = 'a'
-        allow(input_test).to receive(:gets).and_return(str)
+        letter = 'a'
+        allow(input_test).to receive(:gets).and_return(letter, valid_num_str)
       end
 
-      xit 'rejects the input and asks for another' do
-        expect(input_test.player_input).to be_nil
+      it 'rejects the input and asks for another' do
+        expect(input_test.player_input).to eq(valid_num)
       end
     end
 
@@ -86,19 +93,19 @@ describe Player do
           allow(input_test).to receive(:gets).and_return(lower_bound)
         end
 
-        xit 'returns the number' do
+        it 'returns the number' do
           expect(input_test.player_input).to eq(1)
         end
       end
 
       context 'when inputting upper bound number' do
         before do
-          upper_bound = '6'
+          upper_bound = '7'
           allow(input_test).to receive(:gets).and_return(upper_bound)
         end
 
-        xit 'returns the number' do
-          expect(input_test.player_input).to eq(6)
+        it 'returns the number' do
+          expect(input_test.player_input).to eq(7)
         end
       end
     end

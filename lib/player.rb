@@ -1,13 +1,19 @@
-require 'pry-byebug'
-
 class Player
   COLOURS = %w[red green yellow blue magenta cyan].freeze
 
-  def initialize
-    @token_colour = assign_token_colour
+  def initialize(token_colour = assign_token_colour)
+    @token_colour = token_colour
   end
 
-  def player_input; end
+  def player_input
+    puts 'Input the column number from 1-7: '
+    loop do
+      choice = gets.chomp.to_i
+      return choice if choice.between?(1, 7)
+
+      puts 'Invalid input. Input the column number from 1-7: '
+    end
+  end
 
   private
 
