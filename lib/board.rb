@@ -12,6 +12,7 @@ class Board
 
   def initialize(game_board = new_board)
     @game_board = game_board
+    display_board
   end
 
   def display_board
