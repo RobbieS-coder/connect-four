@@ -15,7 +15,8 @@ class ConnectFour
       success = false
       until success
         input = @current_player.player_input
-        success = @board.drop_piece(input)
+        player_colour = @current_player.token_colour
+        success = @board.drop_piece(input, player_colour)
       end
       switch_player
     end
@@ -32,3 +33,6 @@ class ConnectFour
     puts "#{@board.evaluate_winner} has made a line and won!"
   end
 end
+
+game = ConnectFour.new
+game.game_loop

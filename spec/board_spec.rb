@@ -24,7 +24,7 @@ describe Board do
   describe '#drop_piece' do
     context 'when drop is successful' do
       context 'when column is empty' do
-        subject(:empty_column_drop) { described_class(empty_column) }
+        subject(:empty_column_drop) { described_class.new(empty_column) }
 
         let(:empty_column) do
           [
@@ -48,20 +48,19 @@ describe Board do
             [nil, nil, nil, nil, nil, nil]
           ]
         end
+        let!(:result) { empty_column_drop.drop_piece(1, 'blue') }
 
-        before { result = empty_column_drop.drop_piece(1, 'blue') }
-
-        xit 'drops to the bottom' do
+        it 'drops to the bottom' do
           expect(empty_column_drop.instance_variable_get(:@game_board)).to eq(empty_column_drop_result)
         end
 
-        xit 'returns true' do
-          expect(result).to eq(true)
+        it 'returns true' do
+          expect(result).to be(true)
         end
       end
 
       context 'when column is semi-full' do
-        subject(:semi_full_column_drop) { described_class(semi_full_column) }
+        subject(:semi_full_column_drop) { described_class.new(semi_full_column) }
 
         let(:semi_full_column) do
           [
@@ -85,21 +84,20 @@ describe Board do
             [nil, nil, nil, nil, nil, nil]
           ]
         end
+        let!(:result) { semi_full_column_drop.drop_piece(1, 'red') }
 
-        before { result = semi_full_column_drop.drop_piece(1, 'red') }
-
-        xit 'drops on top of highest token' do
+        it 'drops on top of highest token' do
           expect(semi_full_column_drop.instance_variable_get(:@game_board)).to eq(semi_full_column_drop_result)
         end
 
-        xit 'returns true' do
-          expect(result).to eq(true)
+        it 'returns true' do
+          expect(result).to be(true)
         end
       end
     end
 
     context 'when column is full' do
-      subject(:full_column_drop) { described_class(full_column) }
+      subject(:full_column_drop) { described_class.new(full_column) }
 
       let(:full_column) do
         [
@@ -112,15 +110,14 @@ describe Board do
           [nil, nil, nil, nil, nil, nil]
         ]
       end
+      let!(:result) { full_column_drop.drop_piece(1, 'blue') }
 
-      before { result = full_column_drop.drop_piece(1, 'blue') }
-
-      xit '@game_board does not change' do
+      it '@game_board does not change' do
         expect(full_column_drop.instance_variable_get(:@game_board)).to eq(full_column)
       end
 
-      xit 'returns false' do
-        expect(result).to eq(false)
+      it 'returns false' do
+        expect(result).to be(false)
       end
     end
   end
