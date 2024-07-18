@@ -40,7 +40,11 @@ class Board
     horizontal_win? || vertical_win? || diagonal_win? || game_draw?
   end
 
-  def evaluate_winner; end
+  def evaluate_winner
+    return evaluate_horizontal if horizontal_win?
+    return evaluate_vertical if vertical_win?
+    return evaluate_diagonal if diagonal_win? # rubocop:disable Style/RedundantReturn
+  end
 
   private
 
@@ -65,6 +69,10 @@ class Board
     end
   end
 
+  def evaluate_horizontal
+    evaluate_chunks(@game_board.transpose)
+  end
+
   def vertical_win?
     @game_board.any? do |row|
       row.chunk_while { |cell, next_cell| cell && cell == next_cell }
@@ -72,9 +80,17 @@ class Board
     end
   end
 
+  def evaluate_vertical
+    evaluate_chunks(@game_board)
+  end
+
   def diagonal_win?
     diagonals = collect_diagonals
     diagonals.any? { |diagonal| diagonal.first && diagonal.uniq.length == 1 }
+  end
+
+  def evaluate_diagonal
+    evaluate_chunks(collect_diagonals)
   end
 
   def collect_diagonals
@@ -103,6 +119,15 @@ class Board
       rl_diagonals << [board[c][r], board[c - 1][r + 1], board[c - 2][r + 2], board[c - 3][r + 3]]
     end
     rl_diagonals
+  end
+
+  def evaluate_chunks(arrays)
+    arrays.each do |array|
+      array.chunk_while { |cell, next_cell| cell && cell == next_cell }
+           .each do |chunk|
+        return chunk.first if chunk.size >= 4
+      end
+    end
   end
 
   def game_draw?

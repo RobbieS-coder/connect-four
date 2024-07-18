@@ -271,7 +271,7 @@ describe Board do
   describe '#evaluate_winner' do
     context 'when player_one wins' do
       context 'with a horizontal line' do
-        subject(:evaluate_player_one_horizontal_win) { described_class(player_one_horizontal_win) }
+        subject(:evaluate_player_one_horizontal_win) { described_class.new(player_one_horizontal_win) }
 
         let(:player_one_horizontal_win) do
           [
@@ -285,14 +285,14 @@ describe Board do
           ]
         end
 
-        xit "returns player_one's colour" do
+        it "returns player_one's colour" do
           result = evaluate_player_one_horizontal_win.evaluate_winner
           expect(result).to eq('blue')
         end
       end
 
       context 'with a vertical line' do
-        subject(:evaluate_player_one_vertical_win) { described_class(player_one_vertical_win) }
+        subject(:evaluate_player_one_vertical_win) { described_class.new(player_one_vertical_win) }
 
         let(:player_one_vertical_win) do
           [
@@ -306,14 +306,14 @@ describe Board do
           ]
         end
 
-        xit "returns player_one's colour" do
+        it "returns player_one's colour" do
           result = evaluate_player_one_vertical_win.evaluate_winner
           expect(result).to eq('blue')
         end
       end
 
       context 'with a diagonal line' do
-        subject(:evaluate_player_one_diagonal_win) { described_class(player_one_diagonal_win) }
+        subject(:evaluate_player_one_diagonal_win) { described_class.new(player_one_diagonal_win) }
 
         let(:player_one_diagonal_win) do
           [
@@ -327,7 +327,7 @@ describe Board do
           ]
         end
 
-        xit "returns player_one's colour" do
+        it "returns player_one's colour" do
           result = evaluate_player_one_diagonal_win.evaluate_winner
           expect(result).to eq('blue')
         end
@@ -335,7 +335,7 @@ describe Board do
     end
 
     context 'when player two wins' do
-      subject(:evaluate_player_two_horizontal_win) { described_class(player_two_horizontal_win) }
+      subject(:evaluate_player_two_horizontal_win) { described_class.new(player_two_horizontal_win) }
 
       context 'with a horizontal line' do
         let(:player_two_horizontal_win) do
@@ -350,14 +350,14 @@ describe Board do
           ]
         end
 
-        xit "returns player_two's colour" do
+        it "returns player_two's colour" do
           result = evaluate_player_two_horizontal_win.evaluate_winner
           expect(result).to eq('red')
         end
       end
 
       context 'with a vertical line' do
-        subject(:evaluate_player_two_vertical_win) { described_class(player_two_vertical_win) }
+        subject(:evaluate_player_two_vertical_win) { described_class.new(player_two_vertical_win) }
 
         let(:player_two_vertical_win) do
           [
@@ -371,14 +371,14 @@ describe Board do
           ]
         end
 
-        xit "returns player_two's colour" do
+        it "returns player_two's colour" do
           result = evaluate_player_two_vertical_win.evaluate_winner
           expect(result).to eq('red')
         end
       end
 
       context 'with a diagonal line' do
-        subject(:evaluate_player_two_diagonal_win) { described_class(player_two_diagonal_win) }
+        subject(:evaluate_player_two_diagonal_win) { described_class.new(player_two_diagonal_win) }
 
         let(:player_two_diagonal_win) do
           [
@@ -392,7 +392,7 @@ describe Board do
           ]
         end
 
-        xit "returns player_two's colour" do
+        it "returns player_two's colour" do
           result = evaluate_player_two_diagonal_win.evaluate_winner
           expect(result).to eq('red')
         end
@@ -400,7 +400,7 @@ describe Board do
     end
 
     context 'when board is full' do
-      subject(:evaluate_draw) { described_class(full_board_draw) }
+      subject(:evaluate_draw) { described_class.new(full_board_draw) }
 
       let(:full_board_draw) do
         [
@@ -414,7 +414,7 @@ describe Board do
         ]
       end
 
-      xit 'returns nil' do
+      it 'returns nil' do
         result = evaluate_draw.evaluate_winner
         expect(result).to eq(nil)
       end
