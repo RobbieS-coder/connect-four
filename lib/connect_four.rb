@@ -33,6 +33,3 @@ class ConnectFour
     puts "#{@board.evaluate_winner} has made a line and won!"
   end
 end
-
-game = ConnectFour.new
-game.game_loop

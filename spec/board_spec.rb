@@ -55,7 +55,7 @@ describe Board do
         end
 
         it 'returns true' do
-          expect(result).to be(true)
+          expect(result).to eq(true)
         end
       end
 
@@ -91,7 +91,7 @@ describe Board do
         end
 
         it 'returns true' do
-          expect(result).to be(true)
+          expect(result).to eq(true)
         end
       end
     end
@@ -117,7 +117,7 @@ describe Board do
       end
 
       it 'returns false' do
-        expect(result).to be(false)
+        expect(result).to eq(false)
       end
     end
   end
@@ -137,7 +137,7 @@ describe Board do
           ]
         end
 
-        xit 'returns true' do
+        it 'returns true' do
           board = described_class.new(horizontal_win)
           result = board.game_over?
           expect(result).to eq(true)
@@ -157,15 +157,15 @@ describe Board do
           ]
         end
 
-        xit 'returns true' do
+        it 'returns true' do
           board = described_class.new(vertical_win)
           result = board.game_over?
-          expect(result).eq(true)
+          expect(result).to eq(true)
         end
       end
 
-      context 'when a diagonal line has been made' do
-        let(:diagonal_win) do
+      context 'when a left to right diagonal line has been made' do
+        let(:lr_diagonal_win) do
           [
             [nil, nil, nil, nil, nil, 'blue'],
             [nil, nil, nil, nil, 'blue', 'red'],
@@ -177,10 +177,30 @@ describe Board do
           ]
         end
 
-        xit 'returns true' do
-          board = described_class.new(diagonal_win)
+        it 'returns true' do
+          board = described_class.new(lr_diagonal_win)
           result = board.game_over?
-          expect(result).eq(true)
+          expect(result).to eq(true)
+        end
+      end
+
+      context 'when a right to left diagonal line has been made' do
+        let(:rl_diagonal_win) do
+          [
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, nil],
+            [nil, nil, nil, nil, nil, 'blue'],
+            [nil, nil, 'blue', 'red', 'red', 'blue'],
+            [nil, nil, nil, 'blue', 'red', 'red'],
+            [nil, nil, nil, nil, 'blue', 'red'],
+            [nil, nil, nil, nil, nil, 'blue']
+          ]
+        end
+
+        it 'returns true' do
+          board = described_class.new(rl_diagonal_win)
+          result = board.game_over?
+          expect(result).to eq(true)
         end
       end
     end
@@ -199,10 +219,10 @@ describe Board do
           ]
         end
 
-        xit 'returns false' do
+        it 'returns false' do
           board = described_class.new(two_not_win)
           result = board.game_over?
-          expect(result).eq(false)
+          expect(result).to eq(false)
         end
       end
 
@@ -219,10 +239,10 @@ describe Board do
           ]
         end
 
-        xit 'returns false' do
+        it 'returns false' do
           board = described_class.new(three_not_win)
           result = board.game_over?
-          expect(result).eq(false)
+          expect(result).to eq(false)
         end
       end
     end
@@ -240,10 +260,10 @@ describe Board do
         ]
       end
 
-      xit 'returns true' do
+      it 'returns true' do
         board = described_class.new(full_board_draw)
         result = board.game_over?
-        expect(result).eq(true)
+        expect(result).to eq(true)
       end
     end
   end

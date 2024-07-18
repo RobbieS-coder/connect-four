@@ -36,7 +36,9 @@ class Board
     false
   end
 
-  def game_over?; end
+  def game_over?
+    horizontal_win? || vertical_win? || diagonal_win? || game_draw?
+  end
 
   def evaluate_winner; end
 
@@ -54,5 +56,56 @@ class Board
     return "#{COLOURS[colour]}#{empty_circle}#{RESET}" if colour
 
     empty_circle
+  end
+
+  def horizontal_win?
+    @game_board.transpose.any? do |row|
+      row.chunk_while { |cell, next_cell| cell && cell == next_cell }
+         .any? { |chunk| chunk.size >= 4 }
+    end
+  end
+
+  def vertical_win?
+    @game_board.any? do |row|
+      row.chunk_while { |cell, next_cell| cell && cell == next_cell }
+         .any? { |chunk| chunk.size >= 4 }
+    end
+  end
+
+  def diagonal_win?
+    diagonals = collect_diagonals
+    diagonals.any? { |diagonal| diagonal.first && diagonal.uniq.length == 1 }
+  end
+
+  def collect_diagonals
+    lr_diagonals + rl_diagonals
+  end
+
+  def lr_diagonals
+    lr_diagonals = []
+    board = @game_board
+    starting_cells = (0..2).flat_map { |r| (0..3).map { |c| [c, r] } }
+    starting_cells.each do |starting_cell|
+      c = starting_cell.first
+      r = starting_cell.last
+      lr_diagonals << [board[c][r], board[c + 1][r + 1], board[c + 2][r + 2], board[c + 3][r + 3]]
+    end
+    lr_diagonals
+  end
+
+  def rl_diagonals
+    rl_diagonals = []
+    board = @game_board
+    starting_cells = (0..2).flat_map { |r| (3..6).map { |c| [c, r] } }
+    starting_cells.each do |starting_cell|
+      c = starting_cell.first
+      r = starting_cell.last
+      rl_diagonals << [board[c][r], board[c - 1][r + 1], board[c - 2][r + 2], board[c - 3][r + 3]]
+    end
+    rl_diagonals
+  end
+
+  def game_draw?
+    @game_board.flatten.none?(&:nil?)
   end
 end

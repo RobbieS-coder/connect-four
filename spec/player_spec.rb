@@ -14,7 +14,8 @@ describe Player do
     context 'when inputting colours' do
       subject(:new_player) { described_class.new }
 
-      let(:valid_colour) { 'blue' }
+      let(:valid_colour) { 'red' }
+      let(:valid_colour_2) { 'yellow' }
       let(:invalid_colour) { 'orange' }
 
       before do
@@ -33,11 +34,11 @@ describe Player do
 
       context 'when inputting an invalid, then valid colour' do
         before do
-          allow_any_instance_of(Player).to receive(:gets).and_return(invalid_colour, valid_colour)
+          allow_any_instance_of(Player).to receive(:gets).and_return(invalid_colour, valid_colour_2)
         end
 
         it 'still assigns the colour to @token_colour' do
-          expect(new_player.instance_variable_get(:@token_colour)).to eq(valid_colour)
+          expect(new_player.instance_variable_get(:@token_colour)).to eq(valid_colour_2)
         end
       end
     end
