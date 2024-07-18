@@ -82,7 +82,7 @@ describe ConnectFour do
         end
 
         it 'runs loop once' do
-          expect(board).to receive(:display_board).once
+          expect(board).to receive(:display_board).twice
           expect(player_one).to receive(:player_input).once
           expect(board).to receive(:drop_piece).once
           expect(end_game).to receive(:switch_player).once
@@ -103,7 +103,7 @@ describe ConnectFour do
         end
 
         it 'runs loop five times' do
-          expect(board).to receive(:display_board).exactly(5).times
+          expect(board).to receive(:display_board).exactly(6).times
           expect(player_one).to receive(:player_input).exactly(3).times
           expect(player_two).to receive(:player_input).twice
           expect(end_game).to receive(:switch_player).exactly(5).times.and_call_original

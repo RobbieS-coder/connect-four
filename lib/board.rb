@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Board
   attr_reader :game_board
 
@@ -10,7 +12,7 @@ class Board
     'cyan' => "\e[36m"
   }.freeze
 
-  RESET = "\e[0m".freeze
+  RESET = "\e[0m"
 
   def initialize(game_board = new_board)
     @game_board = game_board

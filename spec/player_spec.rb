@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../lib/player'
 
 describe Player do
@@ -6,7 +8,7 @@ describe Player do
       it 'asks user to input the token colour' do
         input_request = "The available colours are red, green, yellow, blue, magenta and cyan.\nInput your token colour: "
         expect_any_instance_of(described_class).to receive(:puts).with(input_request).once
-        allow_any_instance_of(Player).to receive(:gets).and_return('blue')
+        allow_any_instance_of(described_class).to receive(:gets).and_return('blue')
         described_class.new
       end
     end
@@ -15,16 +17,16 @@ describe Player do
       subject(:new_player) { described_class.new }
 
       let(:valid_colour) { 'red' }
-      let(:valid_colour_2) { 'yellow' }
+      let(:valid_colour2) { 'yellow' }
       let(:invalid_colour) { 'orange' }
 
       before do
-        allow_any_instance_of(Player).to receive(:puts)
+        allow_any_instance_of(described_class).to receive(:puts)
       end
 
       context 'when inputting valid colour' do
         before do
-          allow_any_instance_of(Player).to receive(:gets).and_return(valid_colour)
+          allow_any_instance_of(described_class).to receive(:gets).and_return(valid_colour)
         end
 
         it 'assigns the colour to @token_colour' do
@@ -34,11 +36,11 @@ describe Player do
 
       context 'when inputting an invalid, then valid colour' do
         before do
-          allow_any_instance_of(Player).to receive(:gets).and_return(invalid_colour, valid_colour_2)
+          allow_any_instance_of(described_class).to receive(:gets).and_return(invalid_colour, valid_colour2)
         end
 
         it 'still assigns the colour to @token_colour' do
-          expect(new_player.instance_variable_get(:@token_colour)).to eq(valid_colour_2)
+          expect(new_player.instance_variable_get(:@token_colour)).to eq(valid_colour2)
         end
       end
     end
@@ -52,7 +54,7 @@ describe Player do
     let(:valid_num) { 2 }
 
     before do
-      allow_any_instance_of(Player).to receive(:puts)
+      allow_any_instance_of(described_class).to receive(:puts)
     end
 
     context 'when inputting a number between 1 and 7' do
