@@ -30,6 +30,7 @@ class ConnectFour
   private
 
   def announce_winner
-    puts "#{@board.evaluate_winner} has made a line and won!"
+    winner = @board.evaluate_winner
+    puts winner ? "#{winner.capitalize} has made a line and won!" : 'The board got filled up and no one won!'
   end
 end
