@@ -4,9 +4,15 @@ class Player
   COLOURS = %w[red green yellow blue magenta cyan].freeze
 
   @@player_colours = []
+  @@player_count = 0
 
   def initialize(token_colour = assign_token_colour)
+    if @@player_count == 1
+      @@player_colours = []
+      @@player_count = 0
+    end
     @token_colour = token_colour
+    @@player_count += 1
   end
 
   def player_input

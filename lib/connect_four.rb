@@ -10,8 +10,8 @@ class ConnectFour
   end
 
   def game_loop
+    @board.display_board
     until @board.game_over?
-      @board.display_board
       success = false
       until success
         input = @current_player.player_input
@@ -19,6 +19,7 @@ class ConnectFour
         success = @board.drop_piece(input, player_colour)
       end
       switch_player
+      @board.display_board
     end
     announce_winner
   end
