@@ -1,5 +1,13 @@
 require_relative 'lib/connect_four'
 
+def main
+  loop do
+    ConnectFour.new.game_loop
+    break unless play_again?
+  end
+  puts 'Thank you for playing!'
+end
+
 def play_again?
   puts 'Do you want to play again? (y/n)'
   loop do
@@ -10,9 +18,4 @@ def play_again?
   end
 end
 
-loop do
-  ConnectFour.new.game_loop
-  break unless play_again?
-end
-
-puts 'Thank you for playing!'
+main
