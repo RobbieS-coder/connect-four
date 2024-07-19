@@ -8,11 +8,12 @@ class Player
   @@player_colours = []
   @@player_count = 0
 
-  def initialize(token_colour = assign_token_colour)
-    if @@player_count == 1
+  def initialize(token_colour = nil)
+    if @@player_count == 2
       @@player_colours = []
       @@player_count = 0
     end
+    token_colour ||= assign_token_colour
     @token_colour = token_colour
     @@player_count += 1
   end
